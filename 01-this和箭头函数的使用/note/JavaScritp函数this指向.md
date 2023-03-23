@@ -21,36 +21,103 @@
 > ```javascript
 > // 案例一
 > function foo() {
-> 	console.log("foo函数: ", this);
+> 	console.log("foo: ", this);
 > }    
-> foo();		// foo函数: Window
+> foo();		// foo: Window
 > 
 > // 案例二
 > function test1() {
->   console.log("test1: ", this);
->   test2();		// test2: Window
+>   	console.log("test1: ", this);
+>   	test2();		// test2: Window
 > }
 > function test2() {
->   console.log("test2: ", this);
->   test3();		// test3: Window
+>   	console.log("test2: ", this);
+>   	test3();		// test3: Window
 > }
 > function test3() {
->   console.log("test3: ", this);
+>   	console.log("test3: ", this);
 > }
 > test1();		// test1: Window
 > 
 > // 案例三
 > function foo(func) {
->   func()
+>   	func()
 > }
 > var obj = {
->   name: "obj",
->   bar: function() {
->   	console.log("bar: ", this);
->   }
+>    	name: "obj",
+>    	bar: function() {
+>      	console.log("bar: ", this);
+>    	}
 > }
 > foo(obj.bar);		// bar: Window
 > ```
+
+##### 2.2、隐式绑定：
+
+> 通过某个对象发起的函数调用我们称之为隐式绑定。
+>
+> ```javascript
+> // 案例一
+> function foo() {
+> 	console.log("foo: ", this);
+> }
+> var obj = {
+>   	name: "why",
+>   	foo: foo
+> }
+> obj.foo();		// foo: obj {name: 'why', foo: ƒ}
+> 
+> // 案例二
+> function foo() {
+> 	console.log("foo: ", this);
+> }
+> var obj1 = {
+>   	name: "obj1",
+>   	foo: foo
+> }
+> var obj2 = {
+>   	name: "obj2",
+>   	obj1: obj1
+> }
+> obj2.obj1.foo();		// foo: obj1 {name: 'obj1', foo: ƒ}
+> 
+> // 案例三
+> function foo() {
+> 	console.log("foo: ", this);
+> }
+> var obj1 = {
+> 	name: "obj1",
+> 	foo: foo
+> }
+> var bar = obj1.foo;
+> bar();		// foo: Window
+> ```
+
+##### 2.3、显式绑定：
+
+> 通过某个对象发起的函数调用我们称之为隐式绑定。
+>
+> ```javascript
+> // 案例一
+> function foo() {
+> 	console.log("foo: ", this);
+> }
+> var obj = {
+> 	name: "why",
+> 	foo: foo
+> }
+> obj.foo();		// foo: obj {name: 'why', foo: ƒ}
+> ```
+
+
+
+
+
+
+
+
+
+
 
 
 
