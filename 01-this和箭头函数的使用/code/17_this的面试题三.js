@@ -1,5 +1,4 @@
 var name = 'window'
-
 /*
   1.创建一个空的对象
   2.将这个空的对象赋值给this
@@ -23,23 +22,20 @@ function Person(name) {
     }
   }
 }
-
 // person1/person都是对象(实例instance)
 var person1 = new Person('person1')
 var person2 = new Person('person2')
-
-
 // 面试题目:
-person1.foo1() // 隐式绑定: person1
-person1.foo1.call(person2) // 显式绑定: person2
+person1.foo1()  // person1 ✅
+person1.foo1.call(person2)  // perosn2 ✅
 
-person1.foo2() // 上层作用域查找: person1
-person1.foo2.call(person2) // 上层作用域查找: person1
+person1.foo2()  // window ❌ person1
+person1.foo2.call(person2)  // window ❌ perosn1
 
-person1.foo3()() // 默认绑定: window
-person1.foo3.call(person2)() // 默认绑定: window
-person1.foo3().call(person2) // 显式绑定: person2
+person1.foo3()()  // perosn1 ❌ window
+person1.foo3.call(person2)()  // person2 ❌ window
+person1.foo3().call(person2)   // perons2  ✅
 
-person1.foo4()() // 上层作用域查找: person1(隐式绑定)
-person1.foo4.call(person2)() //  上层作用域查找: person2(显式绑定)
-person1.foo4().call(person2) // 上层作用域查找: person1(隐式绑定)
+person1.foo4()()  // window ❌ person1
+person1.foo4.call(person2)()  // window ❌ perons2
+person1.foo4().call(person2)   // window ❌ perosn1

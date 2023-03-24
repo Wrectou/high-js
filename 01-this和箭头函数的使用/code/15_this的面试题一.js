@@ -10,13 +10,13 @@ var person = {
 function sayName() {
   var sss = person.sayName;
 
-  sss(); // 绑定: 默认绑定, window -> window
+  sss();    // window ✅
 
-  person.sayName(); // 绑定: 隐式绑定, person -> person
+  person.sayName();   // person ✅
 
-  (person.sayName)(); // 绑定: 隐式绑定, person -> person
+  (person.sayName)();   // window ❌ person
 
-  (b = person.sayName)(); // 术语: 间接函数引用, window -> window
+  (b = person.sayName)();   // window ✅
 }
 
 sayName();

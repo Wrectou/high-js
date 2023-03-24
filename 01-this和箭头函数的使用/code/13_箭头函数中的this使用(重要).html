@@ -15,16 +15,16 @@
     //   console.log("foo", this)
     // }
 
-    // foo()
-    // foo.apply("aaa")
+    // foo()   // Window
+    // foo.apply("aaa")    // {String: "aaa"}
 
     // 2.箭头函数中, 压根没有this
     // var bar = () => {
     //   console.log("bar:", this)
     // }
-    // bar()
-    // 通过apply调用时, 也是没有this
-    // bar.apply("aaaa")
+    // bar()   // Window
+    // // 通过apply调用时, 也是没有this
+    // bar.apply("aaaa")   // Window
 
     // console.log("全局this:", this)
     // var message = "global message"
@@ -32,16 +32,15 @@
     // 3.this的查找规则
     // var obj = {
     //   name: "obj",
-    //   foo: () => {
+    //   foo: function() {
     //     var bar = () => {
     //       console.log("bar:", this)
     //     }
     //     return bar
-        
     //   }
     // }
     // var fn = obj.foo()
-    // fn.apply("bbb")
+    // fn.apply("bbb")   // Window
 
     
 
