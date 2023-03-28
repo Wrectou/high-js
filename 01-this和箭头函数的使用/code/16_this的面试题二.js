@@ -1,4 +1,4 @@
-var name = 'window'
+var name = 'window1'
 var person1 = {
   name: 'person1',
   foo1: function () {
@@ -19,16 +19,16 @@ var person1 = {
 var person2 = { name: 'person2' }
 
 // 开始题目:
-person1.foo1();   // perosn1 ✅
-person1.foo1.call(person2);   // perosn2 ✅
+// person1.foo1();   // person1 ✅
+// person1.foo1.call(person2);   // person2 ✅
 
-person1.foo2();   // window ✅
-person1.foo2.call(person2);   // window ✅
+// person1.foo2();   // person1 ✅ ❌ 对象没有作用域
+// person1.foo2.call(person2);   // person1 ✅ ❌
 
-person1.foo3()();   // person1 ❌ window
-person1.foo3.call(person2)();   // perosn2 ❌ window
-person1.foo3().call(person2);   // person2 ✅
+// person1.foo3()();   // window1 ❌ ✅
+// person1.foo3.call(person2)();   // person2 ❌ ❌
+// person1.foo3().call(person2);   // person1 ✅ ❌
 
-person1.foo4()();   // perosn1 ✅
-person1.foo4.call(person2)();   // perosn2 ✅
-person1.foo4().call(person2);   //  window ❌ perons1
+person1.foo4()();   // perons1 ✅
+person1.foo4.call(person2)();   // person2 ✅
+person1.foo4().call(person2);   //  perons1 ❌ ✅

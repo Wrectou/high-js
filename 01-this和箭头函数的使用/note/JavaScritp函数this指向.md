@@ -324,6 +324,125 @@
 
 ##### 6、箭头函数的使用：
 
+> 箭头函数 (arrow function) 是ES6之后增加的一种新的编写函数的方法。
+>
+> - 没有this和arguments属性；
+> - 不能作为构造函数来使用。
+>
+> ```javascript
+> // 1.之前的方式
+> function foo1() {}
+> var foo2 = function(name, age) {
+>   console.log("函数体代码", this, arguments, name, age)
+> }
+> // 2.箭头函数完整写法
+> var foo3 = (name, age) => {
+>   console.log("箭头函数的函数体", this, arguments, name, age)
+> }
+> // 3.箭头函数的练习
+> // 3.1. forEach
+> var names = ["abc", "cba", "nba"]
+> names.forEach((item, index, arr) => {
+>   console.log(item, index, arr)
+> })
+> // 3.2. setTimeout
+> setTimeout(() => {
+>   console.log("setTimeout")
+> }, 3000)
+> 
+> // 箭头函数的简写
+> var names = ["abc", "cba", "nba"]
+> var nums = [20, 30, 11, 15, 111]
+> // 1.优化一: 如果箭头函数只有一个参数, 那么()可以省略
+> // names.forEach(item => {
+> //   console.log(item)
+> // })
+> // 2.优化二: 如果函数体中只有一行执行代码, 那么{}可以省略
+> // names.forEach(item => console.log(item))
+> // 一行代码中不能带return关键字, 如果省略, 需要带return一起省略(下一条规则)
+> // var newNums = nums.filter(item => {
+> //   return item % 2 === 0
+> // })
+> // 3.优化三: 只有一行代码时, 这行代码的表达式结果会作为函数的返回值默认返回的
+> // var newNums = nums.filter(item => item % 2 === 0)
+> // 4.优化四: 如果默认返回值是一个对象, 那么这个对象必须加()
+> // var arrFn = () => ["abc", "cba"]
+> // var arrFn = () => ({ name: "why" })
+> // console.log(arrFn())
+> 
+> // 箭头函数实现nums的所有偶数平方的和
+> var nums = [20, 30, 11, 15, 111]
+> var result = nums.filter(item => item % 2 === 0)
+> 								 .map(item => item * item)
+> 								 .reduce((prevValue, item) => prevValue + item)
+> console.log(result)
+> ```
+
+##### 7、箭头函数中的this:
+
+> ```javascript
+> // 1.普通函数中是有this的标识符
+> // function foo() {
+> //   console.log("foo", this)
+> // }
+> // foo()   // Window
+> // foo.apply("aaa")    // {String: "aaa"}
+> // 2.箭头函数中, 压根没有this
+> // var bar = () => {
+> //   console.log("bar:", this)
+> // }
+> // bar()   // Window
+> // 通过apply调用时, 也是没有this
+> // bar.apply("aaaa")   // Window
+> // console.log("全局this:", this)
+> // var message = "global message"
+> // 3.this的查找规则
+> // var obj = {
+> //   name: "obj",
+> //   foo: function() {
+> //     var bar = () => {
+> //       console.log("bar:", this)
+> //     }
+> //     return bar
+> //   }
+> // }
+> // var fn = obj.foo()
+> // fn.apply("bbb")   // Window
+> ```
+
+8、箭头函数中this的应用:
+
+> ```javascript
+> // 网络请求的工具函数
+> function request(url, callbackFn) {
+>   var results = ["abc", "cba", "nba"]
+>   callbackFn(results)
+> }
+> // 实际操作的位置(业务)
+> var obj = {
+>   names: [],
+>   network: function() {
+>     // 1.早期的时候
+>     // var _this = this
+>     // request("/names", function(res) {
+>     //   _this.names = [].concat(res)
+>     // })
+>     // 2.箭头函数写法
+>     request("/names", res => {
+>       this.names = [].concat(res)
+>     })
+>   }
+> }
+> obj.network()
+> console.log(obj)
+> ```
+
+
+
+
+
+
+
 
 
 

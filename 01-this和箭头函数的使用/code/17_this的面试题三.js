@@ -27,15 +27,15 @@ var person1 = new Person('person1')
 var person2 = new Person('person2')
 // 面试题目:
 person1.foo1()  // person1 ✅
-person1.foo1.call(person2)  // perosn2 ✅
+person1.foo1.call(person2)  // person2 ✅
 
-person1.foo2()  // window ❌ person1
-person1.foo2.call(person2)  // window ❌ perosn1
+person1.foo2()  // window ❌ ❌
+person1.foo2.call(person2)  // window ❌ ❌
 
-person1.foo3()()  // perosn1 ❌ window
-person1.foo3.call(person2)()  // person2 ❌ window
-person1.foo3().call(person2)   // perons2  ✅
+person1.foo3()()  // window ❌ ✅
+person1.foo3.call(person2)()  // person2 ❌ ❌
+person1.foo3().call(person2)   // person2 ✅
 
-person1.foo4()()  // window ❌ person1
-person1.foo4.call(person2)()  // window ❌ perons2
-person1.foo4().call(person2)   // window ❌ perosn1
+person1.foo4()()  // window ❌ ❌
+person1.foo4.call(person2)()  // person2 ❌ ✅
+person1.foo4().call(person2)   // window ❌ ❌

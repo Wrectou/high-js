@@ -1,4 +1,4 @@
-var name = "window";
+var name = "window1";
 
 var person = {
   name: "person",
@@ -10,13 +10,13 @@ var person = {
 function sayName() {
   var sss = person.sayName;
 
-  sss();    // window ✅
+  sss();    // window1 ✅
 
   person.sayName();   // person ✅
 
-  (person.sayName)();   // window ❌ person
+  (person.sayName)();   // window1 ❌ 
 
-  (b = person.sayName)();   // window ✅
+  (b = person.sayName)();   // window1 ✅
 }
 
 sayName();
