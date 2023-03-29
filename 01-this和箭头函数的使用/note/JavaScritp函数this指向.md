@@ -410,119 +410,148 @@
 > // fn.apply("bbb")   // Window
 > ```
 
-8、箭头函数中this的应用:
+##### 8、箭头函数中this的应用:
 
 > ```javascript
 > // 网络请求的工具函数
 > function request(url, callbackFn) {
->   var results = ["abc", "cba", "nba"]
->   callbackFn(results)
+>   	var results = ["abc", "cba", "nba"]
+>   	callbackFn(results)
 > }
 > // 实际操作的位置(业务)
 > var obj = {
->   names: [],
->   network: function() {
->     // 1.早期的时候
->     // var _this = this
->     // request("/names", function(res) {
->     //   _this.names = [].concat(res)
->     // })
->     // 2.箭头函数写法
->     request("/names", res => {
->       this.names = [].concat(res)
->     })
->   }
+>   	names: [],
+>   	network: function() {
+>       // 1.早期的时候
+>       // var _this = this
+>       // request("/names", function(res) {
+>       //   _this.names = [].concat(res)
+>       // })
+>       // 2.箭头函数写法
+>       request("/names", res => {
+>         this.names = [].concat(res)
+>       })
+>   	}
 > }
 > obj.network()
 > console.log(obj)
 > ```
 
+##### 9、面试题
 
+```javascript
+// 面试题一
+var name = "window1";
+var person = {
+  name: "person",
+  sayName: function () {
+    console.log(this.name);
+  }
+};
+function sayName() {
+  var sss = person.sayName;
+  sss();    //  ✅
+  person.sayName();   //  ✅
+  (person.sayName)();   //  ❌ 
+  (b = person.sayName)();   //  ✅
+}
+sayName();
 
+// 面试题二
+var name = 'window1';
+var person1 = {
+  name: 'person1',
+  foo1: function () {
+    console.log(this.name)
+  },
+  foo2: () => console.log(this.name),
+  foo3: function () {
+    return function () {
+      console.log(this.name)
+    }
+  },
+  foo4: function () {
+    return () => {
+      console.log(this.name)
+    }
+  }
+};
+var person2 = { name: 'person2' };
+person1.foo1();   //  ✅
+person1.foo1.call(person2);   //  ✅
 
+person1.foo2();   //  ✅ ❌
+person1.foo2.call(person2);   //  ✅ ❌
 
+person1.foo3()();   //  ❌ ✅
+person1.foo3.call(person2)();   //  ❌ ❌
+person1.foo3().call(person2);   //  ✅ ❌
 
+person1.foo4()();   //  ✅
+person1.foo4.call(person2)();   //  ✅
+person1.foo4().call(person2);   //   ❌ ✅
 
+// 面试题三
+var name = 'window';
+function Person(name) {
+  this.name = name;
+  this.foo1 = function () {
+    console.log(this.name)
+  };
+  this.foo2 = () => console.log(this.name);
+  this.foo3 = function () {
+    return function () {
+      console.log(this.name)
+    }
+  };
+  this.foo4 = function () {
+    return () => {
+      console.log(this.name)
+    }
+  };
+}
+var person1 = new Person('person1');
+var person2 = new Person('person2');
+person1.foo1()  //  ✅
+person1.foo1.call(person2)  //  ✅
 
+person1.foo2()  //  ❌ ❌
+person1.foo2.call(person2)  //  ❌ ❌
 
+person1.foo3()()  //  ❌ ✅
+person1.foo3.call(person2)()  //  ❌ ❌
+person1.foo3().call(person2)   //  ✅
 
+person1.foo4()()  //  ❌ ❌
+person1.foo4.call(person2)()  //  ❌ ✅
+person1.foo4().call(person2)   //  ❌ ❌
 
+// 面试题四
+var name = 'window';
+function Person(name) {
+  this.name = name;
+  this.obj = {
+    name: 'obj',
+    foo1: function () {
+      return function () {
+        console.log(this.name)
+      }
+    },
+    foo2: function () {
+      return () => {
+        console.log(this.name)
+      }
+    }
+  };
+}
+var person1 = new Person('person1');
+var person2 = new Person('person2');
+person1.obj.foo1()()  //  ❌ ✅
+person1.obj.foo1.call(person2)()  //  ❌ ✅
+person1.obj.foo1().call(person2)  //  ✅
 
-
-## 一. this的绑定规则
-
-### 1.1. 绑定规则
-
-* 默认绑定
-* 隐式绑定
-* 显式绑定
-* new绑定
-
-
-
-### 1.2. 显式绑定
-
-* apply/call
-* bind
-
-
-
-### 1.3. 内置函数的规则
-
-* 经验
-
-
-
-### 1.4. 规则的优先级
-
-* new
-* bind
-* apply/call
-* 隐式绑定
-* 默认绑定
-
-
-
-### 1.5. 规则之外的情况
-
-* undefined/null
-* 间接函数引用(了解)
-
-
-
-
-
-## 二. 箭头函数的使用
-
-### 2.1. 箭头函数的写法
-
-* 基本写法
-* 优化写法
-  * 只有一个参数时, 可以省略()
-  * 只有一行代码时, 可以省略{}
-  * 只要一行代码时, 表达式的返回值会作为箭头函数默认返回值, 所以可以省略return
-  * 如果箭头函数默认返回的是对象, 在省略{}的时候, 对象必须使用()包裹 () => ({name: "why"})
-
-
-
-### 2.2. 箭头函数中的this
-
-* 箭头函数是没有绑定this
-* this的查找规则:
-  * 去上层作用域中查找this
-  * 直到找到全局this
-
-
-
-### 2.3. 箭头函数this应用
-
-* 模拟网络请求
-* 不好理解: 回调(好好理解一下)
-  * 函数传来传去
-
-
-
-
-
-
+person1.obj.foo2()()  //  ✅
+person1.obj.foo2.call(person2)()  //  ✅
+person1.obj.foo2().call(person2)  //  ✅
+```
 
