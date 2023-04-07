@@ -15,7 +15,7 @@
     function foo() {
       var name = "foo"
       setTimeout(function() {
-        console.log(name, message)
+        console.log(name, message, this)
       }, 3000)
     }
 

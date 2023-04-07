@@ -17,13 +17,14 @@
 
       function bar() {
         var message = "bar message"
-        console.log(message)
+        console.log(message, this)
       }
 
       return bar
     }
 
     var bar = foo()
+  
     bar()
 
   </script>

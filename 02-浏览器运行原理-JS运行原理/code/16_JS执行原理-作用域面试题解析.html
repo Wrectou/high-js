@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>16_JS执行原理-作用域面试题解析</title>
 </head>
 <body>
   
@@ -17,7 +17,7 @@
     // }
     // foo()
 
-    // console.log(n)
+    // console.log(n)    // 100 ❌
 
     // 2.面试题二:
     // var n = 100
@@ -27,7 +27,7 @@
     //   console.log(n)
     // }
 
-    // foo()
+    // foo()   // undefined 200 ✅
 
     // 3.面试题三:
     // var n = 100
@@ -40,7 +40,7 @@
     //   console.log(n)
     //   foo1()
     // }
-    // foo2()
+    // foo2()    // 200 100 ✅
 
     // 4.面试题四:
     // var n = 100
@@ -49,21 +49,21 @@
     //   return
     //   var n = 200
     // }
-    // foo()
+    // foo()   // undefined ✅
 
     // 5.在开发中可能会出现这样错误的写法
     // function foo() {
     //   message = "Hello World"
     // }
     // foo()
-    // console.log(message)
+    // console.log(message)    // Hello World ✅
 
     // 6.面试题五:
     function foo() {
       var a = b = 100
     }
     foo()
-    console.log(b)
+    console.log(b)    // 100 ✅
 
   </script>
 
