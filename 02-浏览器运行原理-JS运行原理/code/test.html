@@ -7,7 +7,107 @@
   <title>ready</title>
 </head>
 <body>
-  <script src="./test.js" defer></script>
-  <div id="app">app</div>
+
+  <!-- <div 
+    v-for="item in sealData" 
+    :key="item.id" 
+    class="seare-div“ 
+    @change="setImageLocation(item)" 
+    :style="[top:imageLocationHeight+'px',left:imageLocationWidth+'px]"
+  >
+  
+  </div>
+
+  data: {
+    return {
+      imageLocationWidth: 0,
+      imageLocationHeight: 0
+    }
+  }
+
+  setImageLocation(item) {
+    let img= new Image()
+    img.src =data.url;
+    img.onload = function() {
+      this.imageLocationWidth = data.isEdgeTop?data.ordinate:data.ordinate - img.height/2
+      this.imageLocationHeight = data.isEdgeleft?data.abscissa:data.abscissa - imgwidth/2
+    }
+  } -->
+
+  <button class="add">增加内存占用</button>
+  <br/>
+  <br/>
+  <br/>
+  <button class="delete">销毁内存占用</button>
+
+  <!-- <script src="./test.js" defer></script>
+  <div id="app">app</div> -->
+
+  <script>
+
+
+    async function setImageLocation(data, type) {
+      console.log(data, type)
+      let img = new Image();
+      img.src = data.url;
+      console.log("111");
+      let hh = await getImgInfo(data, type)
+      console.log("222");
+    }
+
+    function getImgInfo(data, type) {
+      let img = new Image();
+      img.src = data.url;
+      return new Promise((resolve, reject) => {
+        img.onload = function() {
+          console.log("333");
+          if(type=='top') {
+            resolve(data.isEdgeTop?data.ordinate:data.ordinate - img.height/2)
+          }
+          if(type ='left') {
+            resolve(data.isEdgeleft?data.abscissa:data.abscissa - img.width/2)
+          }
+        }
+      })
+    }
+
+    setImageLocation({url: "https://fanyi-cdn.cdn.bcebos.com/static/translation/img/header/logo_e835568.png"}, "top")
+
+    // function foo() {
+    //   var name = "zhangsan"
+    //   var age = 22
+    //   function bar() {
+    //     debugger
+    //     console.log(name);
+    //   }
+    //   return bar
+    // }
+
+    // var fn = foo()
+    // fn()
+
+
+    function createArray() {
+      var newArr = new Array(1024*1024).fill(1)
+      function foo() {
+        console.log(newArr);
+      }
+      return foo
+    }
+
+    var arrList = []
+    document.querySelector(".add").onclick = function() {
+      for (var i = 0; i < 100; i++) {
+        arrList.push(createArray())
+      }
+      console.log(arrList.length);
+    }
+
+    const deleteEl = document.getElementsByClassName("delete")
+    deleteEl[0].addEventListener("click", function() {
+      arrList = []
+    })
+
+  </script>
 </body>
 </html>

@@ -87,3 +87,31 @@
 >    - defer属性能保证在DOMContentLoaded事件之前执行defer中的代码，async属性不能保证在DOMContentLoaded事件之前或之后执行；
 >    - 多个带有defer属性的脚本可以保证正确的执行顺序，async属性不能保证执行顺序，它独立下载运行，不会等待；
 >    - defer通常用于需要在文档解析后操作DOM的JavaScript代码，并且对多个script文件有顺序要求的，async通常用于独立的脚本，对其他脚本，甚至DOM没有依赖的。
+
+##### 5、JavaScript代码的执行
+
+> 浏览器内核由两部分组成（以webkit为例）：
+> - WebCore：负责HTML解析、布局、渲染等工作；
+> - JavaScriptCore：解析、执行JavaScript代码。
+
+##### 6、V8引擎
+
+> V8引擎是用C++编写的Google开源高性能JavaScript和WebAssembly引擎，用于Chrome和Node.js等。可以独立运行，也可以嵌入到任何C ++应用程序中。
+>
+> ![V8引擎的执行原理](https://note.youdao.com/yws/public/resource/3922cf356902a7e2d14a18e5df9ad73c/xmlnote/A4FC68C7C98A407CA405F0112D6586DC/4158)
+>
+> Parse模块将JS代码转化成AST（抽象语法树），这是因为解释器并不认识JS代码。
+>
+> - 如果函数没有被调用，是不会被转换成AST的。
+>
+> lgnition是解释器，将AST转换成ByteCode（字节码）。
+>
+> - 如果函数只调用一次，lgnition会解释执行ByteCode；
+> - 同时收集TurboFan优化所需信息（比如函数参数类型）。
+>
+> TurboFan是一个编译器，将ByteCode翻译成CPU可以直接执行的机器码。
+>
+> - 一个函数多次调用就会被标记为热点函数，会经过TurboFan转换成机器码，提高代码执行性能；
+> - 机器码也会被还原成ByteCode。例如后续执行过程中，实参类型发生了变化，之前优化的机器码不能正确运算，就会逆向转化成ByteCode。
+
+
