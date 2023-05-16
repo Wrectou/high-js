@@ -1,0 +1,112 @@
+### JavaScript函数的增强知识
+
+------
+
+##### 1、函数对象的属性
+
+> JavaScript中函数也是一个对象，那么函数也就拥有属性和方法。
+>
+> - name属性：函数的名字可以通过name属性来获得；
+>
+> 	```javascript
+> 	function foo() { }
+> 	console.log(foo.name)		// foo
+> 	var bar = function() { }
+> 	console.log(bar.name)		// bar
+> 	```
+>
+> - length属性：用于返回<font color="#F56C6C">函数形参</font>的个数；
+>
+>   - 默认参数不计入参数的个数;
+>   - rest参数不计入参数的个数;
+>
+>   ```javascript
+>   function foo(a, b, c) { }
+>   var bar = function(m, n, ...args) { }
+>   function test(a, b = 2, ...args) { }
+>   test(111, 222, 333)
+>   console.log(foo.length)		// 3
+>   console.log(bar.length)		// 2
+>   console.log(test.length)		// 1
+>   ```
+>
+
+##### 2、认识arguments
+
+> arguments返回的是调用<font color="#F56C6C">函数实参</font>的类数组（array-like）对象。
+>
+> - 类数组意味着它不是一个数组类型，而是一个对象类型。
+>   - 拥有数组的一些特征，比如length属性、可以通过index索引访问；
+>   - 没有数组的方法，比如filter、map等。
+>
+> ```javascript
+> function foo(a, b = 2, ...args) {
+> 	console.log(arguments)
+>   //	Arguments(5) [1, 2, 3, 3, 4, callee: (...), Symbol(Symbol.iterator): ƒ]
+> 	console.log(typeof arguments, arguments instanceof Object)
+>   //	"object" true
+> 	console.log(arguments.length)
+>   // 5
+>   console.log(arguments[0])
+>   // 1
+>   console.log(arguments[4])
+>   // 5
+> }
+> foo(1, 2, 3, 4, 5)
+> ```
+
+##### 3、arguments转换成Array
+
+> 在开发中，我们经常需要将arguments转换成Array，以便使用数组的一些特性。
+>
+> 1. 方式一：遍历arguments，添加到一个新数组中；
+>
+> 2. 方式二：调用数组slice函数的call/apply方法；（了解）
+>
+> 3. 方式三：ES6中的两个方法。（ Array.form(arguments)、[...arguments] ）
+>
+> ```javascript
+> function foo(a, b = 2, ...args) {
+>   // 方式一
+>   var argsArr1 = []
+>   for (let i = 0; i < arguments.length; i++) {
+>     argsArr1.push(arguments[i])
+>   }
+>   console.log("argsArr1: ", argsArr1)		// argsArr1: [1, 2, 3, 4, 5]
+>   // 方式二
+>   var argsArr2 = [].slice.call(arguments)
+>   // var argsArr2 = Array.prototype.slice.apply(arguments)
+>   console.log("argsArr2: ", argsArr2)		// argsArr2: [1, 2, 3, 4, 5]
+>   // 方式三
+>   var argsArr3 = [...arguments]
+>   // var argsArr3 = Array.from(arguments)
+>   console.log("argsArr3: ", argsArr3)		// argsArr3: [1, 2, 3, 4, 5]
+> }
+> foo(1, 2, 3, 4, 5)
+> ```
+>
+
+##### 4、箭头函数不绑定arguments
+
+> 箭头函数没有this，也是不绑定arguments的。所以在<font color="#F56C6C">箭头函数中使用arguments是会去上层作用域查找</font>的。
+>
+> ```javascript
+> // 箭头函数不绑定arguments，上层作用域和window也没有，调用报错
+> console.log(arguments)		// Uncaught ReferenceError: arguments is not defined
+> var foo = (a, b, c) => {
+>   console.log(arguments)		// Uncaught ReferenceError: arguments is not defined
+> }
+> foo(1, 2, 3)
+> 
+> // 函数的嵌套箭头函数，箭头函数获取的arguments是外层函数的
+> function bar() {
+>   console.log(arguments)		
+>   // Arguments(2) [111, 222, callee: ƒ, Symbol(Symbol.iterator): ƒ]
+>   var foo = () => {
+>     console.log(arguments)
+>     // Arguments(2) [111, 222, callee: ƒ, Symbol(Symbol.iterator): ƒ]
+>   }
+>   foo()
+> }
+> bar(111, 222)
+> ```
