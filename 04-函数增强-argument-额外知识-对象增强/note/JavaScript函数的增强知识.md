@@ -110,3 +110,25 @@
 > }
 > bar(111, 222)
 > ```
+
+##### 5、函数的剩余参数 rest paramenters
+
+> ES6中引入了rest paramenter，可以将不定数量的函数实参放入到一个数组中。
+>
+> - 如果最后一个参数是以 ... 为前缀的，那么他会将剩余的参数作为一个数组放到该参数中；
+>
+> - **剩余参数必须放在最后一位**，否则会报错。
+>
+>   ```javascript
+>   function foo(a, b, ...args) {
+>   	console.log(a, b)		// 1, 2
+>   	console.log(args)		// [3, "4", 5]
+>   }
+>   foo(1, 2, 3, "4", 5)
+>   ```
+>
+> 剩余参数和arguments有什么区别呢？
+>
+> - 剩余参数只包含没有对应形参的实参，而arguments对象包含了所有实参；
+> - 剩余参数是真正的数组，而arguments对象是一个伪数组；
+> - arguments是早期ECMAScript中为了方便获取所有实参而提供的一个数据结构，而剩余参数是ES6中提供的希望替代arguments的。
