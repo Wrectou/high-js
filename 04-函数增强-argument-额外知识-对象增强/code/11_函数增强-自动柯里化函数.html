@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>11_函数增强-自动柯里化函数ju</title>
+  <title>11_函数增强-自动柯里化函数</title>
 </head>
 <body>
   
@@ -51,7 +51,7 @@
     
     // 对其他的函数进行柯里化
     var fooCurry = hyCurrying(foo)
-    fooCurry(10)(20)(30)
+    // fooCurry(10)(20)(30)
     // fooCurry(55)(12)(56)
     // fooCurry(55, 12, 56)
 
@@ -69,6 +69,31 @@
     // var names = ["abc", "cba", "nba"]
     // // spread
     // console.log(...names)
+
+
+    
+
+    function sumAdd(a, b, c) {
+      return a + b + c
+    }
+
+    function curryHandle(fn) {
+      function curryFn(...args) {
+        if (args.length >= fn.length) {
+          return fn.apply(this, args)
+        } else {
+          return function(newArgs) {
+            return curryFn.apply(this, args.concat(newArgs))
+          }
+        }
+      }
+      return curryFn
+    }
+
+    var currySumAdd = curryHandle(sumAdd)
+    console.log(currySumAdd(10)(2)(3));
+    console.log(currySumAdd(101, 2, 321));
+    console.log(currySumAdd(101, 2)(3));
 
   </script>
 

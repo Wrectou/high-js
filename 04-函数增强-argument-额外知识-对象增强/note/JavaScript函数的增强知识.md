@@ -268,19 +268,16 @@ console.log(addCurring(1)(2)(3))		// 6
 
 ```javascript
 // 封装函数: 自动转化柯里化过程(有一点难度)
-function hyCurrying(fn) {
+function curryHandle(fn) {
   function curryFn(...args) {
-    console.log(args, args.length);
     // 两类操作:
     // 第一类操作: 继续返回一个新的函数, 继续接受参数
     // 第二类操作: 直接执行fn的函数
     if (args.length >= fn.length) { // 执行第二类
-      return fn(...args)
-      // return fn.apply(this, args)
+      return fn.apply(this, args)
     } else { // 执行第一类
       return function(...newArgs) {
-        return curryFn(...args.concat(newArgs))
-        // return curryFn.apply(this, args.concat(newArgs))
+        return curryFn.apply(this, args.concat(newArgs))
       }
     }
   }
@@ -291,7 +288,7 @@ function foo(x, y, z) {
   console.log(x + y + z)
 }
 // 对其他的函数进行柯里化
-var fooCurry = hyCurrying(foo)
+var fooCurry = curryHandle(foo)
 fooCurry(10)(20)(30)
 // fooCurry(55)(12)(56)
 // fooCurry(55, 12, 56)
