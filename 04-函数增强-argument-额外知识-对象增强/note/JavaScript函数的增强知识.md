@@ -251,18 +251,16 @@ console.log(addCurring(1)(2)(3))		// 6
 >      }
 >      return add
 >    }
->    
->    // 1.数字和5相加
+>         // 1.数字和5相加
 >    var adder5 = makeAdder(5)
 >    adder5(10)
 >    adder5(15)
->    
 >    // 2.数组和10相加
->    var adder10 = makeAdder(10)
+>         var adder10 = makeAdder(10)
 >    adder10(10)
 >    adder10(19)
 >    ```
->
+> 
 
 ###### 7.4、自动柯里化处理函数
 
@@ -294,3 +292,104 @@ fooCurry(10)(20)(30)
 // fooCurry(55, 12, 56)
 ```
 
+
+
+##### 8、组合函数
+
+> 开发中需要对某一个数据进行函数的调用，执行两个函数fn1和fn2，这两个函数是依次执行的。如果每次我们都需要进行两个函数的调用，操作上就会显得重复。那么是否可以将这两个函数组合起来，自动依次调用呢? 这个过程就是对函数的组合，我们称之为组合函数(Compose Function)。
+>
+> ```javascript
+> // 第一步对数字*2
+> function double(num) {
+>   return num * 2
+> }
+> // 第二步对数字**2
+> function pow(num) {
+>   return num ** 2
+> }
+> console.log(pow(double(55)))
+> console.log(pow(double(22)))
+> 
+> // 将上面的两个函数组合在一起, 生成一个新的函数
+> function composeFn(num) {
+>   return pow(double(num))
+> }
+> console.log(composeFn(55))
+> console.log(composeFn(22))
+> ```
+>
+> 实现自动组合函数处理函数：
+>
+> ```javascript
+> // 第一步对数字*2
+> function double(num) {
+>   return num * 2
+> }
+> // 第二步对数字**2
+> function pow(num) {
+>   return num ** 2
+> }
+> 
+> function composeFn(...fns) {
+>   // 1.边界判断(edge case)
+>   var fnLength = fns.length
+>   if (fnLength <= 0) throw new Error("请传入函数参数！")
+>   for (let i = 0; i < fnLength; i++) {
+>     if (typeof fns[i] !== "function") throw new Error(`第${i+1}个参数需要是函数！`)
+>   }
+>   // 2.返回的新函数
+>   return function(...args) {
+>     var result = fns[0].apply(this, args)
+>     for (let i = 1; i < fnLength; i++) {
+>       result = fns[i].apply(this, [result])
+>     }
+>     return result
+>   }
+> }
+> 
+> // var newFn = composeFn()   // 不传参数
+> // var newFn = composeFn(double, pow, {})    // 传错参数类型
+> var newFn = composeFn(double, pow)
+> // var newFn = composeFn(double, pow, console.log)
+> console.log(newFn(190));
+> ```
+
+##### 9、with语句的使用
+
+> with语句拓展一个语句的作用域链，不建议使用。
+>
+> ```javascript
+> var zhangsan = {
+>   name: "zhangsan",
+>   age: 27
+> }
+> // console.log(name);		// ""
+> // console.log(age);		// Uncaught ReferenceError: age is not defined
+> with (zhangsan) {
+>   console.log(name);		// "zhangsan"
+>   console.log(age);		// 27
+> }
+> ```
+
+##### 10、eval函数的使用
+
+> 内建函数eval允许执行一个代码字符串。
+>
+> - eval是一个特殊的函数，它可以将传入的字符串当做JavaScript代码来运行; 
+> -  eval会将最后一句执行语句的结果，作为返回值。
+>
+> **不建议在开发中使用eval**:
+>
+> - eval代码的可读性非常的差(代码的可读性是高质量代码的重要原则);
+> - eval是一个字符串，那么有可能在执行的过程中被刻意篡改，那么可能会造成被攻击的风险;
+> - eval的执行必须经过JavaScript解释器，不能被JavaScript引擎优化。
+>
+> ```javascript
+> var message = "Hello World"
+> var codeString = `var name = "why"; console.log(name); console.log(message); "abc";`
+> var result = eval(codeString)
+> console.log(result)
+> //	"why"
+> //	"Hello World"
+> //	"abc"
+> ```

@@ -4,12 +4,56 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>13_函数增强-组合函数的封装</title>
 </head>
 <body>
   
   <script>
+
     // 第一步对数字*2
+    function double(num) {
+      return num * 2
+    }
+
+    // 第二步对数字**2
+    function pow(num) {
+      return num ** 2
+    }
+
+    function composeFn(...fns) {
+
+      var fnLength = fns.length
+      if (fnLength <= 0) throw new Error("请传入函数参数！")
+      for (let i = 0; i < fnLength; i++) {
+        if (typeof fns[i] !== "function") throw new Error(`第${i+1}个参数需要是函数！`)
+      }
+
+      return function(...args) {
+        var result = fns[0].apply(this, args)
+        for (let i = 1; i < fnLength; i++) {
+          result = fns[i].apply(this, [result])
+        }
+        // console.log(result);
+        return result
+      }
+    }
+
+    // var newFn = composeFn()   // 不传参数
+    // var newFn = composeFn(double, pow, {})    // 传错参数类型
+    var newFn = composeFn(double, pow)
+    // var newFn = composeFn(double, pow, console.log)
+    console.log(newFn(190));
+
+
+
+
+
+
+
+
+
+
+    /* // 第一步对数字*2
     function double(num) {
       return num * 2
     }
@@ -48,7 +92,7 @@
     newFn(22)
     // console.log(newFn(100))
     // console.log(newFn(55))
-    // console.log(newFn(22))
+    // console.log(newFn(22)) */
 
   </script>
 
