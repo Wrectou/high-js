@@ -4,45 +4,61 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>17_额外知识-严格模式的限制</title>
 </head>
 <body>
   
   <script>
     "use strict"
-    // 1.不会意外创建全局变量
+
+    // // 1.不会意外创建全局变量
     // function foo() {
     //   message = "Hello World"
     // }
-
     // foo()
     // console.log(message)
 
-    // 2.发现静默错误
-    var obj = {
-      name: "why"
-    }
-
-    Object.defineProperty(obj, "name", {
-      writable: false,
-      configurable: false
-    })
-
-    // obj.name = "kobe"
-    console.log(obj.name)
-
-    // delete obj.name
-    console.log(obj)
-
-    // 3.参数名称不能相同
-    // function foo(num, num) {
-
+    // // 2.发现静默错误
+    // var obj = {
+    //   name: "why"
     // }
 
-    // 4.不能以0开头
-    // console.log(0o123)
+    // Object.defineProperty(obj, "name", {
+    //   writable: false,
+    //   configurable: false
+    // })
 
-    // 5.eval函数不能为上层创建变量
+    // // obj.name = "kobe"
+    // console.log(obj.name)
+
+    // // delete obj.name
+    // console.log(obj)
+
+    // var zhangsan = {
+    //   name: "zhangsan",
+    //   age: 20
+    // }
+    // Object.defineProperties(zhangsan, {
+    //   name: {
+    //     writable: false
+    //   },
+    //   age: {
+    //     configurable: false
+    //   }
+    // })
+    // // zhangsan.name = "lisi"
+    // console.log(zhangsan);
+    // delete zhangsan.age
+    // console.log(zhangsan);
+
+    // // 3.参数名称不能相同
+    // function foo(num, num) {}
+
+    // // 4.不能以0开头
+    // console.log(0o123)
+    // console.log(0123)
+
+    // // 5.eval函数不能为上层创建变量
     // eval(`var message = "Hello World"`)
     // console.log(message)
 

@@ -100,19 +100,19 @@
 > // 箭头函数不绑定arguments，上层作用域和window也没有，调用报错
 > console.log(arguments)		// Uncaught ReferenceError: arguments is not defined
 > var foo = (a, b, c) => {
->   console.log(arguments)		// Uncaught ReferenceError: arguments is not defined
+>   	console.log(arguments)		// Uncaught ReferenceError: arguments is not defined
 > }
 > foo(1, 2, 3)
 > 
 > // 函数的嵌套箭头函数，箭头函数获取的arguments是外层函数的
 > function bar() {
->   console.log(arguments)		
->   // Arguments(2) [111, 222, callee: ƒ, Symbol(Symbol.iterator): ƒ]
->   var foo = () => {
->     console.log(arguments)
+>     console.log(arguments)		
 >     // Arguments(2) [111, 222, callee: ƒ, Symbol(Symbol.iterator): ƒ]
->   }
->   foo()
+>     var foo = () => {
+>       console.log(arguments)
+>       // Arguments(2) [111, 222, callee: ƒ, Symbol(Symbol.iterator): ƒ]
+>     }
+>     foo()
 > }
 > bar(111, 222)
 > ```
@@ -256,7 +256,7 @@ console.log(addCurring(1)(2)(3))		// 6
 >    adder5(10)
 >    adder5(15)
 >    // 2.数组和10相加
->         var adder10 = makeAdder(10)
+>    var adder10 = makeAdder(10)
 >    adder10(10)
 >    adder10(19)
 >    ```
@@ -301,18 +301,18 @@ fooCurry(10)(20)(30)
 > ```javascript
 > // 第一步对数字*2
 > function double(num) {
->   return num * 2
+>   	return num * 2
 > }
 > // 第二步对数字**2
 > function pow(num) {
->   return num ** 2
+>   	return num ** 2
 > }
 > console.log(pow(double(55)))
 > console.log(pow(double(22)))
 > 
 > // 将上面的两个函数组合在一起, 生成一个新的函数
 > function composeFn(num) {
->   return pow(double(num))
+>   	return pow(double(num))
 > }
 > console.log(composeFn(55))
 > console.log(composeFn(22))
@@ -323,28 +323,28 @@ fooCurry(10)(20)(30)
 > ```javascript
 > // 第一步对数字*2
 > function double(num) {
->   return num * 2
+>   	return num * 2
 > }
 > // 第二步对数字**2
 > function pow(num) {
->   return num ** 2
+>   	return num ** 2
 > }
 > 
 > function composeFn(...fns) {
->   // 1.边界判断(edge case)
->   var fnLength = fns.length
->   if (fnLength <= 0) throw new Error("请传入函数参数！")
->   for (let i = 0; i < fnLength; i++) {
->     if (typeof fns[i] !== "function") throw new Error(`第${i+1}个参数需要是函数！`)
->   }
->   // 2.返回的新函数
->   return function(...args) {
->     var result = fns[0].apply(this, args)
->     for (let i = 1; i < fnLength; i++) {
->       result = fns[i].apply(this, [result])
+>     // 1.边界判断(edge case)
+>     var fnLength = fns.length
+>     if (fnLength <= 0) throw new Error("请传入函数参数！")
+>     for (let i = 0; i < fnLength; i++) {
+>      	if (typeof fns[i] !== "function") throw new Error(`第${i+1}个参数需要是函数！`)
 >     }
->     return result
->   }
+>     // 2.返回的新函数
+>     return function(...args) {
+>      	var result = fns[0].apply(this, args)
+>      	for (let i = 1; i < fnLength; i++) {
+>        	result = fns[i].apply(this, [result])
+>      	}
+>      	return result
+>    	}
 > }
 > 
 > // var newFn = composeFn()   // 不传参数
@@ -360,14 +360,14 @@ fooCurry(10)(20)(30)
 >
 > ```javascript
 > var zhangsan = {
->   name: "zhangsan",
->   age: 27
+>   	name: "zhangsan",
+>   	age: 27
 > }
 > // console.log(name);		// ""
 > // console.log(age);		// Uncaught ReferenceError: age is not defined
 > with (zhangsan) {
->   console.log(name);		// "zhangsan"
->   console.log(age);		// 27
+>   	console.log(name);		// "zhangsan"
+>   	console.log(age);		// 27
 > }
 > ```
 
@@ -392,4 +392,116 @@ fooCurry(10)(20)(30)
 > //	"why"
 > //	"Hello World"
 > //	"abc"
+> ```
+
+
+
+##### 11、严格模式
+
+###### 11.1、什么是严格模式？
+
+>  JavaScript历史的局限性：
+>
+>  - JavaScript 不断发展很多新特性被加入，为了兼容旧代码，旧的代码功能也没有改变。缺点是 JavaScript 创造者的任何错误或不完善的决定也将永远被保留在 JavaScript 语言中。
+>
+>  在ECMAScript5标准中，JavaScript提出了**严格模式的概念（Strict Mode）**: 
+>
+>  - 一种具有限制性的模式，使代码隐式的脱离了“懒散(sloppy)模式”。支持严格模式的浏览器在检测到代码打开了严格模式时，会以更加严格的方式对代码进行检测和执行。
+>
+>  严格模式对正常的JavaScript语义进行了一些限制：
+>
+>  - 严格模式通过抛出错误来消除一些原有的静默错误；
+>  - 严格模式让JS引擎在执行代码时可以进行更多的优化(不需要对一些特殊的语法进行处理)；
+>  - 严格模式禁用了在ECMAScript未来版本中可能会定义的一些语法。
+
+###### 11.2、如何开启严格模式？
+
+> **严格模式通过在文件或者函数开头使用```use strict```来开启。**支持粒度化的控制：
+>
+> - 支持在单个js文件中开启严格模式；
+> - 也支持对某一个单独函数开启严格模式。
+>
+> 没有类似于```no use strict```这样的指令可以使程序返回默认模式。
+>
+> - 现代 JavaScript 支持 “class” 和 “module”，它们会自动启用 use strict。
+>
+> ```javascript
+> // 给整个script开启严格模式
+> "use strict"
+> console.log(this);		// Window
+> 
+> // 给一个函数开启严格模式
+> function foo() {
+>   "use strict"
+>   console.log(this);		// undefined
+> }
+> foo()
+> ```
+
+###### 11.3、严格模式的限制
+
+> JavaScript为了开发者更容易上手，有时候错误的语法，也是被正常解析的。这种方式可能会带来安全隐患。在严格模式下，这种语法错误就会被当做错误，以便可以快速的发现和修正。
+>
+> 1.  无法意外的创建全局变量；
+> 2.  严格模式会使引起静默失败(silently fail,注不报错也没有任何效果)的赋值操作抛出异常；
+> 3.  严格模式下试图删除不可删除的属性；
+> 4.  严格模式不允许函数参数有相同的名称；
+> 5.  不允许0的八进制语法；
+> 6.  在严格模式下，不允许使用with；
+> 7.  在严格模式下，eval不再为上层引用变量；
+> 8.  严格模式下，this绑定不会默认转成对象。
+>
+> ```javascript
+> "use strict"
+> 
+> // 1.不会意外创建全局变量
+> function foo() {
+>   message = "Hello World"
+> }
+> foo()
+> console.log(message)		// Uncaught ReferenceError: message is not defined
+> 
+> // 2.发现静默错误
+> var zhangsan = {
+>   name: "zhangsan",
+>   age: 20
+> }
+> Object.defineProperties(zhangsan, {
+>   name: {
+>     writable: false
+>   },
+>   age: {
+>     configurable: false
+>   }
+> })
+> zhangsan.name = "lisi"
+> console.log(zhangsan);
+> // TypeError: Cannot assign to read only property 'name' of object '#<Object>'
+> delete zhangsan.age
+> console.log(zhangsan);
+> // Uncaught TypeError: Cannot delete property 'age' of #<Object>
+> 
+> // 3.参数名称不能相同
+> function foo(num, num) {}
+> // Uncaught SyntaxError: Duplicate parameter name not allowed in this context (at
+> 
+> // 4.不能以0开头
+> console.log(0o123)		// 83
+> console.log(0123)
+> // Uncaught SyntaxError: Octal literals are not allowed in strict mode. (at
+> 
+> // 5.eval函数不能为上层创建变量
+> eval(`var message = "Hello World"`)
+> console.log(message)		// Uncaught ReferenceError: message is not defined
+> 
+> // 6.严格模式下, this是不会转成对象类型的
+> function foo() {
+> 	console.log(this)		// undefined / window
+> 	// 独立函数执行默认模式下, 绑定window对象。在严格模式下, 不绑定全局对象而是undefined
+> }
+> foo.apply("abc")		// abc / String {'abc'}
+> foo.apply(123)		// 123 / Number {123}
+> foo.apply(undefined)		// undefined / window
+> foo.apply(null)		// null	/ window
+> foo()
 > ```
