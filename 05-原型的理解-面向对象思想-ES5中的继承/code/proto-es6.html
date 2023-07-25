@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>proto-es6</title>
+</head>
+<body>
+  <script>
+
+    class Person {
+      constructor(name, age) {
+        this.name = name
+        this.age = age
+      }
+      sayHello() {
+        console.log(`hello, my name is ${this.name}`);
+      }
+    }
+
+    class Student extends Person {
+      constructor(name, age, score) {
+        super(name, age)
+        this.score = score
+      }
+      studying() {
+        console.log(`${this.name} is studying!`);
+      }
+    }
+
+    var p = new Person("person", 23)
+    // console.log("p: ", p);
+    
+    var s = new Student("student", 20, 100)
+    console.log("s: ", s);
+    s.sayHello()
+    s.studying()
+
+
+    // function Person(name, age) {
+    //   this.name = name
+    //   this.age = age
+    // }
+    // Person.prototype.sayHello = function() {
+    //   console.log(`hello, my name is ${this.name}`);
+    // }
+    // function Student(name, age, score) {
+    //   Person.call(this, name, age)
+    //   this.score = score
+    // }
+
+    // function extentFunc(target, origin) {
+    //   function F() {}
+    //   F.prototype = origin.prototype
+    //   target.prototype = new F()
+    //   Object.defineProperty(target.prototype, "construcotr", {
+    //     enumerable: false,
+    //     configurable: true,
+    //     writable: true,
+    //     value: target
+    //   })
+    // }
+    // extentFunc(Student, Person)
+
+    // // function F() {}
+    // // F.prototype = Person.prototype
+    // // Student.prototype = new F()
+    // // Object.defineProperty(Student.prototype, "constructor", {
+    // //   enumerable: false,
+    // //   configurable: true,
+    // //   writable: true,
+    // //   value: Student
+    // // })
+
+    // Student.prototype.studying = function() {
+    //   console.log(`${this.name} is studying!`);
+    // }
+
+    // var s = new Student("student", 20, 100)
+    // console.log("s: ", s);
+    // s.sayHello()
+    // s.studying()
+  </script>
+</body>
+</html>

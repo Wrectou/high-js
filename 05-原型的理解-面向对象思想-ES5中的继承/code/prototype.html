@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>prototype</title>
+</head>
+<body>
+  <script>
+
+    function Person(name, age, height) {
+      this.name = name
+      this.age = age
+      this.height = height
+    }
+    Person.prototype.sayHello = function() {
+      console.log(`Hello, My name is ${this.name}`);
+    }
+    Person.prototype.eating = function() {
+      console.log("eating");
+    }
+
+
+    function Student(name, age, height, sno, sscore) {
+      Person.call(this, name, age, height)
+      this.sno = sno
+      this.sscore = sscore
+    }
+
+    var p = new Person("person", 27, 175)
+    // console.log('p: ', p);
+    Student.prototype = p
+
+    Student.prototype.studying = function() {
+      console.log("studying");
+    }
+    Object.defineProperty(Student.prototype, "constructor", {
+      enumerable: false,
+      configurable: true,
+      writable: true,
+      value: Student
+    })
+
+
+    // 原始方式，有问题
+    var s = new Student("student", 30, 170, 114514, 66)
+    console.log('s: ', s);
+    s.sayHello()
+    s.studying()
+
+    // // 方案一
+    // var obj = {}
+    // obj.__proto__ = Person.prototype
+    // Student.prototype = obj
+    // Student.prototype.studying = function() {
+    //   console.log("studying");
+    // }
+    // Object.defineProperty(Student.prototype, "constructor", {
+    //   enumerable: false,
+    //   configurable: true,
+    //   writable: true,
+    //   value: Student
+    // })
+    // var s1 = new Student("student", 30, 170, 114514, 66)
+    // console.log('s1: ', s1);
+
+
+  </script>
+</body>
+</html>

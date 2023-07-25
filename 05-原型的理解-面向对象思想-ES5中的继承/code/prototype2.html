@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>prototype1</title>
+</head>
+<body>
+  <script>
+
+    function createObject(prototype) {
+      function F() {}
+      F.prototype = prototype
+      return new F()
+    }
+    function inherit(Subtype, Supertype) {
+      Subtype.prototype = createObject(Supertype.prototype)
+      Object.defineProperty(Subtype.prototype, "constructor", {
+        enumerable: false,
+        configurable: true,
+        writable: true,
+        value: Subtype
+      })
+    }
+
+    function Person(name, age, height) {
+      this.name = name
+      this.age = age
+      this.height = height
+    }
+    Person.prototype.sayHello = function() {
+      console.log(`Hello, My name is ${this.name}`);
+    }
+    Person.prototype.eating = function() {
+      console.log("eating");
+    }
+
+    function Student(name, age, height, sno, sscore) {
+      Person.call(this, name, age, height)
+      this.sno = sno
+      this.sscore = sscore
+    }
+
+    inherit(Student, Person)
+    Student.prototype.studying = function() {
+      console.log("studying");
+    }
+   
+    // 自动处理函数
+    var ss = new Student("student", 30, 170, 114514, 66)
+    console.log('ss: ', ss);
+    ss.sayHello()
+    ss.studying()
+
+
+
+  </script>
+</body>
+</html>
